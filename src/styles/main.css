@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  border: 1px solid #808080;
+  margin-top: 1rem;
+  margin-right: 20vw;
+  margin-left: 20vw;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+header {
+  justify-content: space-between;
+  display: flex;
+  border: 2px solid red;
+}
+header .btn {
+  margin-left: 30vw;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}/*# sourceMappingURL=main.css.map */
