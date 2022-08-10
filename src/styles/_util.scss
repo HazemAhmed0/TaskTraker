@@ -1,0 +1,11 @@
+@mixin centerify {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
