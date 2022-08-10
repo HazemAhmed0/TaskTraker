@@ -4,16 +4,19 @@ const TaskList = [
     {
         id:0,
         text: "Task Number 1",
-        status: "inProgress",
+        desc: "Lorem Impsum",
+        status: "Ready",
         user: ""
     },{
         id:1,
         text: "Task Number 2",
-        status: "Cancelled",
+        desc: "Lorem Impsum",
+        status: "Ready",
         user: ""
     },{
         id:2,
         text: "Task Number 3",
+        desc: "Lorem Impsum",
         status: "Done",
         user: ""
     }

@@ -5,6 +5,8 @@
 }
 
 .container {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
   border: 1px solid #808080;
   margin-top: 1rem;
   margin-right: 20vw;
@@ -14,12 +16,37 @@
 }
 
 header {
+  font-family: Arial, Helvetica, sans-serif;
   justify-content: space-between;
   display: flex;
-  border: 2px solid red;
 }
 header .btn {
-  margin-left: 30vw;
   border-radius: 1rem;
   padding: 0.5rem;
+}
+
+.task {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 2rem);
+  background-color: #f1f1f1;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+}
+.task h3 {
+  grid-row: 1;
+  color: #0f3d3e;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+.task p {
+  grid-row: 2;
+  margin-top: 0.6rem;
+  color: #100f0f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 0.9rem;
+}
+.task a {
+  grid-row: 2;
 }/*# sourceMappingURL=main.css.map */
