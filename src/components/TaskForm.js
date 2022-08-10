@@ -1,6 +1,6 @@
 import '../styles/main.css';
 
-const NewTask = () => {
+const TaskForm = () => {
   return (
     <form className="NewTask">
         <label htmlFor="title">Task</label>
@@ -11,9 +11,10 @@ const NewTask = () => {
         <select name="status" >
             <option value="Ready">Ready</option>
             <option value="Done">Done</option>
+            <option value="InProgress">In Progress</option>
         </select>
     </form>
   )
 }
 
-export default NewTask
+export default TaskForm
