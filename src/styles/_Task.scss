@@ -21,5 +21,21 @@
   }
   a {
     grid-row: 2;
+    cursor: pointer;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  * {
+    margin-top: 0.3rem;
+  }
+  label {
+    font-size: 1.3rem;
+  }
+  input,
+  select {
+    padding: 0.3rem;
   }
 }

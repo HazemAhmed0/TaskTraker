@@ -22,6 +22,22 @@
 }
 .task a {
   grid-row: 2;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+form * {
+  margin-top: 0.3rem;
+}
+form label {
+  font-size: 1.3rem;
+}
+form input,
+form select {
+  padding: 0.3rem;
 }
 
 * {

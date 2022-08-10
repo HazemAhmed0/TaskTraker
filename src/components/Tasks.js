@@ -1,36 +1,13 @@
-import Task from "./Task"
+import Task from "./Task";
 
-const TaskList = [
-    {
-        id:0,
-        text: "Task Number 1",
-        desc: "Lorem Impsum",
-        status: "Ready",
-        user: ""
-    },{
-        id:1,
-        text: "Task Number 2",
-        desc: "Lorem Impsum",
-        status: "Ready",
-        user: ""
-    },{
-        id:2,
-        text: "Task Number 3",
-        desc: "Lorem Impsum",
-        status: "Done",
-        user: ""
-    }
-]
-
-
-const Tasks = () => {
+const Tasks = ({ tasks, onDelete }) => {
   return (
     <>
-    {TaskList.map((task) =>(
-        <Task key={task.id} task={task}/>
-    ))}
+      {tasks.map((task) => (
+        <Task key={task.id} task={task} onDelete={onDelete} />
+      ))}
     </>
-  )
-}
+  );
+};
 
-export default Tasks
+export default Tasks;
