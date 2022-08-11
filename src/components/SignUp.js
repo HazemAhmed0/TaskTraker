@@ -1,16 +1,25 @@
 import { Form, Button, Card } from "react-bootstrap";
 import React, { useRef } from "react";
+import { useAuth } from "./Auth";
 
 const SignUp = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const passConfRef = useRef();
+  const { signUp } = useAuth();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    signUp(emailRef.current.value, passRef.current.value);
+  }
+
   return (
     <>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
-          <Form>
+          <Form onSubmit={(event) => handleSubmit(event)}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />

@@ -4,6 +4,7 @@ import Tasks from "./components/Tasks";
 import TaskForm from "./components/TaskForm";
 import SignUp from "./components/SignUp";
 import { useState } from "react";
+import { AuthProvider } from "./components/Auth";
 
 function App() {
   const [taskList, setTaskList] = useState([
@@ -43,12 +44,14 @@ function App() {
   };
 
   return (
-    <div className="container">
-      {/* <Header title="Example" />
+    <AuthProvider>
+      <div className="container">
+        {/* <Header title="Example" />
       <TaskForm onAdd={addTask} />
       <Tasks tasks={taskList} onDelete={deleteTask} /> */}
-      <SignUp />
-    </div>
+        <SignUp />
+      </div>
+    </AuthProvider>
   );
 }
 
