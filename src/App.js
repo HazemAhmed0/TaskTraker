@@ -2,6 +2,7 @@ import "./styles/main.css";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import TaskForm from "./components/TaskForm";
+import SignUp from "./components/SignUp";
 import { useState } from "react";
 
 function App() {
@@ -30,22 +31,23 @@ function App() {
   ]);
   let id = taskList.length;
 
-  const [user, setUser] = useState("");
+  const [userID, setuserID] = useState("");
   const deleteTask = (id) => {
     setTaskList(taskList.filter((task) => task.id != id));
   };
   const addTask = (task) => {
-    const newTask = { id, ...task, user };
+    const newTask = { id, ...task, userID };
     console.log(newTask);
-    //setTaskList(...taskList, newTask);
+    setTaskList([...taskList, newTask]);
     id++;
   };
 
   return (
     <div className="container">
-      <Header title="Example" />
+      {/* <Header title="Example" />
       <TaskForm onAdd={addTask} />
-      <Tasks tasks={taskList} onDelete={deleteTask} />
+      <Tasks tasks={taskList} onDelete={deleteTask} /> */}
+      <SignUp />
     </div>
   );
 }
