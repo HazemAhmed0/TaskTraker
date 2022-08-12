@@ -1,7 +1,18 @@
+.Ready {
+  background-color: red;
+}
+
+.Done {
+  background-color: green;
+}
+
+.InProgress {
+  background-color: yellow;
+}
+
 .task {
   display: grid;
   grid-template-columns: 1fr repeat(4, 2rem);
-  background-color: #f1f1f1;
   margin-top: 1rem;
   border-radius: 0.5rem;
   padding: 0.6rem;

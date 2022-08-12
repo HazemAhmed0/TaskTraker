@@ -1,7 +1,9 @@
 import '../styles/main.css';
 const task = ({task, onDelete}) => {
+  var classes = task.status + " task"
   return (
-    <div className="task">
+
+    <div className={classes}>
         <h3>{task.text}</h3>
         <p>{task.desc}</p>
         <a title='In Progress'>&#9994;</a>

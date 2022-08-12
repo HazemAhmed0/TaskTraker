@@ -5,6 +5,8 @@ import TaskForm from "./components/TaskForm";
 import SignUp from "./components/SignUp";
 import { useState } from "react";
 import { AuthProvider } from "./components/Auth";
+import { Routes, Route } from 'react-router-dom';
+
 
 function App() {
   const [taskList, setTaskList] = useState([
@@ -12,7 +14,7 @@ function App() {
       id: 0,
       text: "Task Number 1",
       desc: "Lorem Impsum",
-      status: "Ready",
+      status: "InProgress",
       user: "",
     },
     {
@@ -46,10 +48,14 @@ function App() {
   return (
     <AuthProvider>
       <div className="container">
+        <Routes> {/* The Switch decides which component to show based on the current URL.*/}
+          <Route exact path='/tasks' element={<Tasks tasks={taskList} onDelete={deleteTask} />}></Route>
+          <Route exact path='/signup' element={<SignUp />}></Route>
+        </Routes>
         {/* <Header title="Example" />
       <TaskForm onAdd={addTask} />
-      <Tasks tasks={taskList} onDelete={deleteTask} /> */}
-        <SignUp />
+      <Tasks tasks={taskList} onDelete={deleteTask} /> 
+        <SignUp /> */}
       </div>
     </AuthProvider>
   );
