@@ -9,15 +9,22 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currUser, setCurrUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   const signUp = (email, password) => {
-    console.log("git here");
-    auth.createUserWithEmailAndPassword(email, password);
+    return auth.createUserWithEmailAndPassword(email, password);
+  };
+  const login = (email, password) => {
+    return auth.signInWithEmailAndPassword(email, password);
+  };
+  const logout = () => {
+    return auth.signOut();
   };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrUser(user);
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -25,10 +32,16 @@ export function AuthProvider({ children }) {
 
   const value = {
     signUp,
+    login,
     currUser,
+    logout,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }
 
 export default AuthProvider;
