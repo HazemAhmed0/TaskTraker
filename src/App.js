@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import TaskForm from "./components/TaskForm";
 import SignUp from "./components/SignUp";
+import UserDetails from "./components/UserDetails"
 import { useState } from "react";
 import { AuthProvider } from "./components/Auth";
 import { Routes, Route } from 'react-router-dom';
@@ -47,16 +48,18 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="container">
-        <Routes> {/* The Switch decides which component to show based on the current URL.*/}
-          <Route exact path='/tasks' element={<Tasks tasks={taskList} onDelete={deleteTask} />}></Route>
-          <Route exact path='/signup' element={<SignUp />}></Route>
-        </Routes>
-        {/* <Header title="Example" />
+      <Routes>
+        <Route exact path='/tasks' element={<Tasks tasks={taskList} onDelete={deleteTask} />}></Route>
+        <Route exact path='/newtask' element={<TaskForm onAdd={addTask} />}></Route>
+        <Route exact path='/user' element={<UserDetails />}></Route>
+
+        <Route exact path='/signup' element={<SignUp />}></Route>
+      </Routes>
+      {/* <Header title="Example" />
       <TaskForm onAdd={addTask} />
       <Tasks tasks={taskList} onDelete={deleteTask} /> 
         <SignUp /> */}
-      </div>
+
     </AuthProvider>
   );
 }

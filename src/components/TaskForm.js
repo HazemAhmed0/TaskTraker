@@ -15,6 +15,9 @@ const TaskForm = ({ onAdd }) => {
     setText("")
     setDesc("")
     setStatus("Ready")
+    // this.props.history.push('/foo')
+
+
   }
 
   return (
