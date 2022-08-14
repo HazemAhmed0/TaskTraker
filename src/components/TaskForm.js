@@ -23,7 +23,7 @@ const TaskForm = () => {
       desc: newTask.desc,
       status: newTask.status,
       text: newTask.text,
-      user: "",
+      user: currUser.email,
     };
     console.log("attempting to add", payload);
     await addDoc(collRef, payload);

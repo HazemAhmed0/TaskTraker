@@ -6,12 +6,12 @@ import Tasks from "./components/Tasks";
 import TaskForm from "./components/TaskForm";
 import SignUp from "./components/SignUp";
 import UserDetails from "./components/UserDetails";
-import { useAuth } from "./components/Auth";
 import { useEffect, useState } from "react";
 import { AuthProvider } from "./components/Auth";
 import { Routes, Route } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   useEffect(() => {
@@ -28,24 +28,59 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route exact path="/tasks" element={<Tasks tasks={taskList} />}></Route>
-        <Route exact path="/profile" element={<Home />}></Route>
+        <Route
+          exact
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <Tasks tasks={taskList} />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          exact
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route exact path="/login" element={<Login />}></Route>
-        <Route exact path="/newtask" element={<TaskForm />}></Route>
-        <Route exact path="/user" element={<UserDetails />}></Route>
-
+        <Route
+          exact
+          path="/newtask"
+          element={
+            <ProtectedRoute>
+              <TaskForm />
+            </ProtectedRoute>
+          }
+        ></Route>
+        <Route
+          exact
+          path="/user"
+          element={
+            <ProtectedRoute>
+              <UserDetails />
+            </ProtectedRoute>
+          }
+        ></Route>
         <Route exact path="/signup" element={<SignUp />}></Route>
         <Route
           exact
           path="/forgot-password"
           element={<ForgotPassword />}
         ></Route>
-        <Route exact path="/userdetails" element={<UserDetails />}></Route>
+        <Route
+          exact
+          path="/userdetails"
+          element={
+            <ProtectedRoute>
+              <UserDetails />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
-      {/* <Header title="Example" />
-      <TaskForm onAdd={addTask} />
-      <Tasks tasks={taskList} onDelete={deleteTask} /> 
-        <SignUp /> */}
     </AuthProvider>
   );
 }

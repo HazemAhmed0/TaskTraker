@@ -20,6 +20,7 @@ const Login = () => {
       setLoading(true);
       await login(emailRef.current.value, passRef.current.value);
       navigate("/tasks");
+      console.log("Ok Im in as ", currUser.email);
     } catch (err) {
       setError(refineErr(err.message));
       console.log("error");

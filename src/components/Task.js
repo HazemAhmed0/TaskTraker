@@ -1,4 +1,6 @@
 import "../styles/main.css";
+import { Link, useNavigate } from "react-router-dom";
+
 const task = ({ task, onDelete, onDone, onProgress }) => {
   var classes = task.status + " task";
   return (

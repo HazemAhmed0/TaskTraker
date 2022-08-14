@@ -9,8 +9,10 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import { useAuth } from "./Auth";
 
 const Tasks = ({ tasks }) => {
+  const { currUser } = useAuth();
   const onDelete = async (id) => {
     console.log("Deleting");
     await deleteDoc(doc(getFirestore(), "tasks", id));
@@ -29,19 +31,36 @@ const Tasks = ({ tasks }) => {
     };
     await updateDoc(docRef, payload);
   };
+  // const onEdit = async (task) => {
+  //   const docRef = doc(getFirestore(), "tasks", task.id);
+  //   console.log("got here");
+  //   let newText = prompt("Please enter new title", task.text);
+  //   let newDesc = prompt("Please enter new title", task.text);
+  //   let newStatus = prompt("Please enter new title", task.text);
+
+  //   const payload = {
+  //     desc: newDesc,
+  //     text: newText,
+  //     status: newStatus,
+  //   };
+  //   await updateDoc(docRef, payload);
+  // };
 
   return (
     <div className="container">
       <Link to="../newtask">ADD NEW TASK</Link>
-      {tasks.map((task) => (
-        <Task
-          key={task.id}
-          task={task}
-          onDelete={onDelete}
-          onDone={onComplete}
-          onProgress={onProgress}
-        />
-      ))}
+      {tasks
+        .filter((task) => task.user == currUser.email)
+        .map((task) => (
+          <Task
+            key={task.id}
+            task={task}
+            onDelete={onDelete}
+            onDone={onComplete}
+            onProgress={onProgress}
+            // onEdit={onEdit}
+          />
+        ))}
     </div>
   );
 };
