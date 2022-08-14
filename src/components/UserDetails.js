@@ -3,11 +3,13 @@ import React, { useRef } from "react";
 import { useAuth } from "./Auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import avatar from "../res/testProfile.jpg";
 
 const UserDetails = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const passConfRef = useRef();
+  const profilePicRef = useRef();
   const { currUser, updatePassword, updateEmail, refineErr } = useAuth();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
@@ -26,6 +28,9 @@ const UserDetails = () => {
     }
     if (passRef.current.value) {
       promises.push(updatePassword(passRef.current.value));
+    }
+    if (profilePicRef.current.value) {
+      console.log(profilePicRef.current.value);
     }
 
     Promise.all(promises)
@@ -71,8 +76,22 @@ const UserDetails = () => {
                 ref={passConfRef}
                 // minLength="6"
                 placeholder="Leave blank to keep the same"
-                required
               />
+            </Form.Group>
+            <Form.Group id="profile-picture">
+              <Form.Label>Upload Profile Picture</Form.Label>
+              <Form.Control
+                type="file"
+                ref={profilePicRef}
+                // minLength="6"
+                placeholder="Leave blank to keep the same"
+                accept="image/png, image/jpeg"
+              />
+              <img
+                alt="Avatar"
+                className="avatar"
+                src={currUser.photoURL || avatar}
+              ></img>
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
               Update
@@ -81,7 +100,7 @@ const UserDetails = () => {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/tasks">Cancel</Link>
+        <Link to="/tasks">Cancel</Link>
       </div>
     </>
   );

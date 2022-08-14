@@ -76,4 +76,10 @@ header .btn {
   margin-left: 20vw;
   padding: 1rem;
   border-radius: 1rem;
+}
+
+.avatar {
+  width: 10rem;
+  margin: 1rem;
+  border-radius: 50%;
 }/*# sourceMappingURL=main.css.map */

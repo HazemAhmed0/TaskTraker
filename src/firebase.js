@@ -1,15 +1,17 @@
-import firebase from "firebase/compat/app"
-import "firebase/compat/auth"
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import { getFirestore } from "firebase/firestore";
 
 const app = firebase.initializeApp({
-    apiKey: "AIzaSyDwv8LR0H-le2AAQYNqzWBjBWYgw_WwmIs",
+  apiKey: "AIzaSyDwv8LR0H-le2AAQYNqzWBjBWYgw_WwmIs",
   authDomain: "task-tracker-865c6.firebaseapp.com",
   projectId: "task-tracker-865c6",
   storageBucket: "task-tracker-865c6.appspot.com",
   messagingSenderId: "603745298529",
   appId: "1:603745298529:web:fe2602420ab620a57ce220",
-  measurementId: "G-900YPRB4N6"
-})
+  measurementId: "G-900YPRB4N6",
+});
 
-export const auth = app.auth()
-export default app
+export const auth = app.auth();
+export const firestore = getFirestore();
+export default app;
