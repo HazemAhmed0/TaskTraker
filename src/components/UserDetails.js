@@ -9,6 +9,8 @@ const UserDetails = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const passConfRef = useRef();
+  const NameRef = useRef();
+  const TelRef = useRef();
   const profilePicRef = useRef();
   const { currUser, updatePassword, updateEmail, refineErr } = useAuth();
   const [error, setError] = useState();
@@ -29,8 +31,27 @@ const UserDetails = () => {
     if (passRef.current.value) {
       promises.push(updatePassword(passRef.current.value));
     }
+    if (NameRef.current.value) {
+      promises.push(
+        currUser.updateProfile({
+          displayName: NameRef.current.value,
+        })
+      );
+    }
+
+    if (TelRef.current.value) {
+      promises.push(
+        currUser.updateProfile({
+          phoneNumber: TelRef.current.value,
+        })
+      );
+    }
     if (profilePicRef.current.value) {
-      console.log(profilePicRef.current.value);
+      promises.push(
+        currUser.updateProfile({
+          photoURL: profilePicRef.current.value,
+        })
+      );
     }
 
     Promise.all(promises)
@@ -47,9 +68,10 @@ const UserDetails = () => {
 
   return (
     <>
+      {" "}
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Update your details</h2>
+          <h2 className="text-center mb-4">Profile Details</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={(event) => handleSubmit(event)}>
             <Form.Group id="email">
@@ -58,6 +80,22 @@ const UserDetails = () => {
                 type="email"
                 ref={emailRef}
                 defaultValue={currUser.email}
+              />
+            </Form.Group>
+            <Form.Group id="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                ref={NameRef}
+                defaultValue={currUser.displayName}
+              />
+            </Form.Group>
+            <Form.Group id="phone">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="tel"
+                ref={TelRef}
+                defaultValue={currUser.phoneNumber}
               />
             </Form.Group>
             <Form.Group id="password">
@@ -69,6 +107,7 @@ const UserDetails = () => {
                 placeholder="Leave blank to keep the same"
               />
             </Form.Group>
+
             <Form.Group id="password-confirm">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control

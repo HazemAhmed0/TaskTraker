@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
     return auth.signOut();
   };
   const resetPassword = (email) => {
+    console.log(email);
     return auth.sendPasswordResetEmail(email);
   };
   const refineErr = (err) => {

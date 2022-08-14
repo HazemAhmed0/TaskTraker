@@ -31,20 +31,20 @@ const Tasks = ({ tasks }) => {
     };
     await updateDoc(docRef, payload);
   };
-  // const onEdit = async (task) => {
-  //   const docRef = doc(getFirestore(), "tasks", task.id);
-  //   console.log("got here");
-  //   let newText = prompt("Please enter new title", task.text);
-  //   let newDesc = prompt("Please enter new title", task.text);
-  //   let newStatus = prompt("Please enter new title", task.text);
+  const onEdit = async (task) => {
+    const docRef = doc(getFirestore(), "tasks", task.id);
+    console.log("got here");
+    let newText = prompt("Please enter new title", task.text);
+    let newDesc = prompt("Please enter new title", task.text);
+    let newStatus = prompt("Please enter new title", task.text);
 
-  //   const payload = {
-  //     desc: newDesc,
-  //     text: newText,
-  //     status: newStatus,
-  //   };
-  //   await updateDoc(docRef, payload);
-  // };
+    const payload = {
+      desc: newDesc,
+      text: newText,
+      status: newStatus,
+    };
+    await updateDoc(docRef, payload);
+  };
 
   return (
     <div className="container">
@@ -58,7 +58,7 @@ const Tasks = ({ tasks }) => {
             onDelete={onDelete}
             onDone={onComplete}
             onProgress={onProgress}
-            // onEdit={onEdit}
+            onEdit={onEdit}
           />
         ))}
     </div>

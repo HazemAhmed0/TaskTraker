@@ -57,9 +57,6 @@ const Login = () => {
           </div>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Dont have an account? <Link to="/signup">Sign Up</Link>
-      </div>
     </>
   );
 };

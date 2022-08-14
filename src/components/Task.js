@@ -4,18 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 const task = ({ task, onDelete, onDone, onProgress }) => {
   var classes = task.status + " task";
   return (
-    // const onAdd = async (newTask) => {
-    //   const docRef = doc(getFirestore(), "tasks", "tempID");
-    //   const payload = {
-    //     desc: newTask.desc,
-    //     status: newTask.status,
-    //     text: newTask.text,
-    //     user: "",
-    //   };
-    //   console.log("attempting to add", payload);
-    //   await setDoc(docRef, payload);
-    // };
-
     <div className={classes}>
       <h3>{task.text}</h3>
       <p>{task.desc}</p>

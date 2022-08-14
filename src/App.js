@@ -1,6 +1,5 @@
 import "./styles/main.css";
 import Header from "./components/Header";
-import Home from "./components/Home";
 import Login from "./components/Login";
 import Tasks from "./components/Tasks";
 import TaskForm from "./components/TaskForm";
@@ -12,6 +11,7 @@ import { Routes, Route } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NavBar from "./components/NavBar";
 
 function App() {
   useEffect(() => {
@@ -27,6 +27,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <NavBar />
       <Routes>
         <Route
           exact
@@ -42,7 +43,7 @@ function App() {
           path="/profile"
           element={
             <ProtectedRoute>
-              <Home />
+              <UserDetails />
             </ProtectedRoute>
           }
         ></Route>
@@ -70,15 +71,6 @@ function App() {
           exact
           path="/forgot-password"
           element={<ForgotPassword />}
-        ></Route>
-        <Route
-          exact
-          path="/userdetails"
-          element={
-            <ProtectedRoute>
-              <UserDetails />
-            </ProtectedRoute>
-          }
         ></Route>
       </Routes>
     </AuthProvider>
