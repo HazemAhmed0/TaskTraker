@@ -8,18 +8,17 @@ import SignUp from "./components/SignUp";
 import UserDetails from "./components/UserDetails";
 import { useAuth } from "./components/Auth";
 import { useEffect, useState } from "react";
-import storage from "./firebase";
 import { AuthProvider } from "./components/Auth";
 import { Routes, Route } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword";
-import { db } from "./firebase";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 
 function App() {
   useEffect(() => {
     onSnapshot(collection(getFirestore(), "tasks"), (snapshot) => {
-      let currSnap = snapshot.docs.map((doc) => doc.data());
-      // console.log(currSnap);
+      let currSnap = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      });
       setTaskList(currSnap);
     });
   });

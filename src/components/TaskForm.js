@@ -1,13 +1,32 @@
 import "../styles/main.css";
 import { useState } from "react";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  setDoc,
+  addDoc,
+} from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./Auth";
 
 const TaskForm = () => {
+  const { currUser } = useAuth();
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const [desc, setDesc] = useState("");
   const [status, setStatus] = useState("Ready");
 
-  const onAdd = () => {
-    console.log("attempting to add");
+  const onAdd = async (newTask) => {
+    const collRef = collection(getFirestore(), "tasks");
+    const payload = {
+      desc: newTask.desc,
+      status: newTask.status,
+      text: newTask.text,
+      user: "",
+    };
+    console.log("attempting to add", payload);
+    await addDoc(collRef, payload);
   };
 
   const onSub = (e) => {
@@ -16,7 +35,7 @@ const TaskForm = () => {
     setText("");
     setDesc("");
     setStatus("Ready");
-    // this.props.history.push('/foo')
+    navigate("/tasks");
   };
 
   return (
