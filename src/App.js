@@ -56,7 +56,7 @@ function App() {
           path="/tasks"
           element={<Tasks tasks={taskList} onDelete={deleteTask} />}
         ></Route>
-        <Route exact path="/" element={<Home />}></Route>
+        <Route exact path="/profile" element={<Home />}></Route>
         <Route exact path="/login" element={<Login />}></Route>
         <Route
           exact

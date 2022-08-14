@@ -20,6 +20,18 @@ export function AuthProvider({ children }) {
   const logout = () => {
     return auth.signOut();
   };
+  const resetPassword = (email) => {
+    return auth.sendPasswordResetEmail(email);
+  };
+  const refineErr = (err) => {
+    return err.replace("Firebase: ", "").replace(/\(auth.*\)\.?/, "");
+  };
+  const updateEmail = (newEmail) => {
+    return currUser.updateEmail(newEmail);
+  };
+  const updatePassword = (newPassword) => {
+    return currUser.updatePassword(newPassword);
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -35,6 +47,10 @@ export function AuthProvider({ children }) {
     login,
     currUser,
     logout,
+    resetPassword,
+    refineErr,
+    updatePassword,
+    updateEmail,
   };
 
   return (

@@ -8,7 +8,7 @@ const SignUp = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const passConfRef = useRef();
-  const { signUp, currUser } = useAuth();
+  const { signUp, refineErr } = useAuth();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const SignUp = () => {
       setLoading(true);
       await signUp(emailRef.current.value, passRef.current.value);
       navigate("/login");
-    } catch {
-      setError("Failed to create account");
+    } catch (err) {
+      setError(refineErr(err.message));
     }
     setLoading(false);
   }
@@ -46,7 +46,7 @@ const SignUp = () => {
               <Form.Control
                 type="password"
                 ref={passRef}
-                minLength="6"
+                // minLength="6"
                 required
               />
             </Form.Group>
@@ -55,7 +55,7 @@ const SignUp = () => {
               <Form.Control
                 type="password"
                 ref={passConfRef}
-                minLength="6"
+                // minLength="6"
                 required
               />
             </Form.Group>

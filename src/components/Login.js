@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const emailRef = useRef();
   const passRef = useRef();
-  const { login, currUser } = useAuth();
+  const { login, currUser, refineErr } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,8 +20,8 @@ const Login = () => {
       setLoading(true);
       await login(emailRef.current.value, passRef.current.value);
       navigate("/tasks");
-    } catch {
-      setError("Failed to sign in");
+    } catch (err) {
+      setError(refineErr(err.message));
       console.log("error");
     }
     setLoading(false);
