@@ -32,8 +32,11 @@ const NavBar = () => {
               <p onClick={handleLogout}>Log Out</p>
             </div>
           </div>
-          {currUser.photoURL}
-          <img src={placeHolderAvatar} alt="Profile avatar" />
+          {currUser.photoURL ? (
+            <img src={currUser.photoURL} alt="Profile avatar" />
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         <div className="sign">

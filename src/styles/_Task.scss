@@ -95,3 +95,15 @@ form {
     opacity: 1;
   }
 }
+
+.pf-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    width: 10vw;
+  }
+}
