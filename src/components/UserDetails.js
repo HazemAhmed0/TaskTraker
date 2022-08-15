@@ -56,7 +56,7 @@ const UserDetails = () => {
 
     Promise.all(promises)
       .then(() => {
-        navigate("/tasks");
+        navigate("/");
       })
       .catch((err) => {
         setError(refineErr(err.message));
@@ -139,7 +139,7 @@ const UserDetails = () => {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        <Link to="/tasks">Cancel</Link>
+        <Link to="/">Cancel</Link>
       </div>
     </>
   );

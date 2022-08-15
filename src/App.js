@@ -31,13 +31,14 @@ function App() {
       <Routes>
         <Route
           exact
-          path="/tasks"
+          path="/"
           element={
             <ProtectedRoute>
               <Tasks tasks={taskList} />
             </ProtectedRoute>
           }
         ></Route>
+
         <Route
           exact
           path="/profile"
@@ -47,7 +48,9 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
         <Route exact path="/login" element={<Login />}></Route>
+
         <Route
           exact
           path="/newtask"
@@ -57,6 +60,17 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
+        <Route
+          exact
+          path="/edit-task/:taskId"
+          element={
+            <ProtectedRoute>
+              <TaskForm />
+            </ProtectedRoute>
+          }
+        ></Route>
+
         <Route
           exact
           path="/user"
@@ -66,7 +80,9 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+
         <Route exact path="/signup" element={<SignUp />}></Route>
+
         <Route
           exact
           path="/forgot-password"

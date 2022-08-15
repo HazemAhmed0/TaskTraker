@@ -31,35 +31,43 @@ const Tasks = ({ tasks }) => {
     };
     await updateDoc(docRef, payload);
   };
-  const onEdit = async (task) => {
-    const docRef = doc(getFirestore(), "tasks", task.id);
-    console.log("got here");
-    let newText = prompt("Please enter new title", task.text);
-    let newDesc = prompt("Please enter new title", task.text);
-    let newStatus = prompt("Please enter new title", task.text);
+  const DraggableElement = document.querySelectorAll(".DraggableElement");
+  DraggableElement.forEach((task) => {
+    task.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/plain", task.id);
+    });
+  });
+  for (const drop of document.querySelectorAll("#delete-zone")) {
+    drop.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
 
-    const payload = {
-      desc: newDesc,
-      text: newText,
-      status: newStatus,
-    };
-    await updateDoc(docRef, payload);
-  };
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      const deletedTaskId = e.dataTransfer.getData("text/plain");
+      onDelete(deletedTaskId);
+    });
+  }
 
   return (
     <div className="container">
-      <Link to="../newtask">ADD NEW TASK</Link>
+      <button className="NewButton">
+        <Link to="../newtask">ADD NEW TASK</Link>
+      </button>
+      <div id="delete-zone">Drag tasks here to delete</div>
+
       {tasks
         .filter((task) => task.user == currUser.email)
         .map((task) => (
-          <Task
-            key={task.id}
-            task={task}
-            onDelete={onDelete}
-            onDone={onComplete}
-            onProgress={onProgress}
-            onEdit={onEdit}
-          />
+          <div className="DraggableElement" id={task.id} draggable={true}>
+            <Task
+              key={task.id}
+              task={task}
+              onDelete={onDelete}
+              onDone={onComplete}
+              onProgress={onProgress}
+            />
+          </div>
         ))}
     </div>
   );

@@ -2,6 +2,7 @@ import { Link, useMatch, useResolvedPath, useNavigate } from "react-router-dom";
 import { Card, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { useAuth } from "./Auth";
+import placeHolderAvatar from "../res/testProfile.jpg";
 
 const NavBar = () => {
   const [error, setError] = useState("");
@@ -23,13 +24,16 @@ const NavBar = () => {
         Task Tracker
       </Link>
       {currUser ? (
-        <div className="sign">
-          <button className="NavButton">
-            <Link to="/profile">Profile</Link>
-          </button>
-          <button className="NavButton" onClick={handleLogout}>
-            Log Out
-          </button>
+        <div className="avatar-combo">
+          <div className="dropdown">
+            <button className="dropbtn">Dropdown</button>
+            <div className="dropdown-content">
+              <Link to="/profile">Profile</Link>
+              <p onClick={handleLogout}>Log Out</p>
+            </div>
+          </div>
+          {currUser.photoURL}
+          <img src={placeHolderAvatar} alt="Profile avatar" />
         </div>
       ) : (
         <div className="sign">
