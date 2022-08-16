@@ -3,26 +3,39 @@ import { useEffect, useState } from "react";
 import {
   collection,
   getFirestore,
-  onSnapshot,
   getDoc,
   updateDoc,
   doc,
   addDoc,
-  deleteDoc,
 } from "firebase/firestore";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./Auth";
 
 const TaskForm = () => {
   const { currUser } = useAuth();
   const navigate = useNavigate();
-  const [text, setText] = useState("");
-  const [desc, setDesc] = useState("");
-  const [status, setStatus] = useState("");
   const [currTask, setCurrTask] = useState("");
   const params = useParams();
   const taskId = params.taskId;
   const [formState, setFormState] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      desc: currTask.desc,
+      status: currTask.status,
+      text: currTask.text,
+    },
+    onSubmit: async (values) => {
+      console.log(values.text);
+      if (formState == "edit") {
+        onEdit({ text: values.text, desc: values.desc, status: values.status });
+      } else {
+        onAdd({ text: values.text, desc: values.desc, status: values.status });
+      }
+      navigate("/");
+    },
+  });
 
   const onEdit = async (newTask) => {
     const docRef = doc(getFirestore(), "tasks", taskId);
@@ -46,19 +59,6 @@ const TaskForm = () => {
     await addDoc(collRef, payload);
   };
 
-  const onSub = (e) => {
-    e.preventDefault();
-    if (formState == "edit") {
-      onEdit({ text, desc, status });
-    } else {
-      onAdd({ text, desc, status });
-    }
-    setText("");
-    setDesc("");
-    setStatus("Ready");
-    navigate("/");
-  };
-
   const getData = async () => {
     const docRef = doc(getFirestore(), "tasks", taskId);
     const docSnap = await getDoc(docRef);
@@ -77,30 +77,30 @@ const TaskForm = () => {
   }, []);
 
   return (
-    <form className="NewTask" onSubmit={onSub}>
+    <form className="NewTask" onSubmit={formik.handleSubmit}>
       <label htmlFor="title">
         {formState == "edit" ? <>Edit Task</> : <>Add New Task</>}
       </label>
       <input
         type="text"
-        name="title"
-        value={currTask.text}
-        onChange={(e) => setText(e.target.value)}
+        name="text"
+        onChange={formik.handleChange}
+        value={formik.values.text}
         required
       />
       <label htmlFor="desc">Description</label>
       <input
         type="text"
         name="desc"
-        value={currTask.desc}
-        onChange={(e) => setDesc(e.target.value)}
+        onChange={formik.handleChange}
+        value={formik.values.desc}
         required
       />
       <label htmlFor="status">Status</label>
       <select
         name="status"
-        value={currTask.status}
-        onChange={(e) => setStatus(e.target.value)}
+        onChange={formik.handleChange}
+        value={formik.values.status}
       >
         <option value="Ready">Ready</option>
         <option value="Done">Done</option>

@@ -1,8 +1,6 @@
-import { Link, useMatch, useResolvedPath, useNavigate } from "react-router-dom";
-import { Card, Button, Alert } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "./Auth";
-import placeHolderAvatar from "../res/testProfile.jpg";
 
 const NavBar = () => {
   const [error, setError] = useState("");
@@ -20,23 +18,26 @@ const NavBar = () => {
 
   return (
     <nav className="nav">
-      <Link to="/tasks" className="site-title">
+      <Link to="/" className="site-title">
         Task Tracker
       </Link>
       {currUser ? (
         <div className="avatar-combo">
           <div className="dropdown">
-            <button className="dropbtn">Dropdown</button>
+            <button className="dropbtn">
+              {" "}
+              {currUser.email}
+              {currUser.photoURL ? (
+                <img src={currUser.photoURL} alt="Profile avatar" />
+              ) : (
+                ""
+              )}
+            </button>
             <div className="dropdown-content">
               <Link to="/profile">Profile</Link>
               <p onClick={handleLogout}>Log Out</p>
             </div>
           </div>
-          {currUser.photoURL ? (
-            <img src={currUser.photoURL} alt="Profile avatar" />
-          ) : (
-            ""
-          )}
         </div>
       ) : (
         <div className="sign">

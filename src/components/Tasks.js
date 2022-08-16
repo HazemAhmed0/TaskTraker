@@ -9,12 +9,12 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+
 import { useAuth } from "./Auth";
 
 const Tasks = ({ tasks }) => {
   const { currUser } = useAuth();
   const onDelete = async (id) => {
-    console.log("Deleting");
     await deleteDoc(doc(getFirestore(), "tasks", id));
   };
   const onComplete = async (id) => {

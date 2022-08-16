@@ -4,6 +4,7 @@ import { useAuth } from "./Auth";
 import { updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 import avatar from "../res/testProfile.jpg";
 import {
   collection,
@@ -42,54 +43,10 @@ const UserDetails = () => {
     }
   }, [currUser]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (passRef.current.value !== passConfRef.current.value) {
-      return setError("Passwords do not match");
-    }
-
-    const promises = [];
-    if (emailRef.current.value !== currUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
-    }
-    if (passRef.current.value) {
-      promises.push(updatePassword(passRef.current.value));
-    }
-    if (NameRef.current.value) {
-      promises.push(
-        currUser.updateProfile({
-          displayName: NameRef.current.value,
-        })
-      );
-    }
-
-    if (TelRef.current.value) {
-      promises.push(
-        currUser.updateProfile({
-          phoneNumber: TelRef.current.value,
-        })
-      );
-    }
-    promises.push(upload(photo, currUser, setLoading));
-
-    Promise.all(promises)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((err) => {
-        setError(refineErr(err.message));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
-
   const upload = async (file, currUser, setLoading) => {
     const fileref = ref(getStorage(), "images/" + currUser.uid + ".png");
     setLoading(true);
     const snapshot = await uploadBytes(fileref, file);
-
     const photoURL = await getDownloadURL(fileref);
 
     updateProfile(currUser, { photoURL });
@@ -97,68 +54,130 @@ const UserDetails = () => {
     alert("Upload done!");
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: currUser.email,
+      name: currUser.displayName,
+      tel: currUser.phoneNumber,
+      password: "",
+      passwordConfirm: "",
+      profile: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      if (values.password !== values.passwordConfirm) {
+        return setError("Passwords do not match");
+      }
+
+      const promises = [];
+      if (values.email !== currUser.email) {
+        promises.push(updateEmail(values.email));
+      }
+      if (values.password !== "") {
+        promises.push(updatePassword(values.password));
+      }
+      if (values.name !== "") {
+        promises.push(
+          currUser.updateProfile({
+            displayName: values.name,
+          })
+        );
+      }
+
+      if (values.tel !== "") {
+        promises.push(
+          currUser.updateProfile({
+            phoneNumber: values.tel,
+          })
+        );
+      }
+
+      promises.push(upload(photo, currUser, setLoading));
+
+      Promise.all(promises)
+        .then(() => {
+          navigate("/");
+        })
+        .catch((err) => {
+          setError(refineErr(err.message));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+  });
+
   return (
     <>
-      {" "}
-      <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Profile Details</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <div className="pf-container">
-            <img src={photoURL}></img>
-          </div>
-          <Form onSubmit={(event) => handleSubmit(event)}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                ref={emailRef}
-                defaultValue={currUser.email}
-              />
-            </Form.Group>
-            <Form.Group id="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                ref={NameRef}
-                defaultValue={currUser.displayName}
-              />
-            </Form.Group>
-            <Form.Group id="phone">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                type="tel"
-                ref={TelRef}
-                defaultValue={currUser.phoneNumber}
-              />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                ref={passRef}
-                // minLength="6"
-                placeholder="Leave blank to keep the same"
-              />
-            </Form.Group>
+      <form onSubmit={formik.handleSubmit}>
+        <h2 className="text-center mb-4">Profile Details</h2>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <div className="pf-container">
+          <img src={photoURL}></img>
+        </div>
+        <div className="input-container">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email Address"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            required
+          />
+        </div>
+        <div className="input-container">
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            required
+          />
+        </div>
+        <div className="input-container">
+          <input
+            id="tel"
+            name="tel"
+            type="tel"
+            onChange={formik.handleChange}
+            value={formik.values.tel}
+          />
+        </div>
+        <div className="input-container">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            placeholder="Leave blank to keep the same"
+          />
+        </div>
+        <div className="input-container">
+          <input
+            id="passwordConfirm"
+            name="passwordConfirm"
+            type="password"
+            onChange={profileChange}
+            value={formik.values.passwordConfirm}
+            placeholder="Leave blank to keep the same"
+          />
+        </div>
 
-            <Form.Group id="password-confirm">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                ref={passConfRef}
-                // minLength="6"
-                placeholder="Leave blank to keep the same"
-              />
-            </Form.Group>
-
-            <input type="file" onChange={profileChange}></input>
-            <Button disabled={loading} className="w-100" type="submit">
-              Update
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+        <input
+          id="profile"
+          name="profile"
+          type="file"
+          accept="image/png"
+          onChange={formik.handleChange}
+          value={formik.values.profile}
+        ></input>
+        <button disabled={loading} className="w-100" type="submit">
+          Update
+        </button>
+      </form>
       <div className="w-100 text-center mt-2">
         <Link to="/">Cancel</Link>
       </div>
