@@ -14,17 +14,15 @@ import { useAuth } from "./Auth";
 const TaskForm = () => {
   const { currUser } = useAuth();
   const navigate = useNavigate();
-  const [currTask, setCurrTask] = useState({});
+  const [currTask, setCurrTask] = useState("");
   const params = useParams();
   const taskId = params.taskId;
+  let intValues;
 
   const onSubmit = async (values) => {
-    console.log(values.text);
     if (taskId) {
-      console.log("i edited");
       onEdit({ text: values.text, desc: values.desc, status: values.status });
     } else {
-      console.log("i added");
       onAdd({ text: values.text, desc: values.desc, status: values.status });
     }
     navigate("/");
@@ -48,7 +46,6 @@ const TaskForm = () => {
       text: newTask.text,
       user: currUser.email,
     };
-    console.log("attempting to add", payload);
     await addDoc(collRef, payload);
   };
 
@@ -56,37 +53,29 @@ const TaskForm = () => {
     const docRef = doc(getFirestore(), "tasks", taskId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
       return docSnap.data();
     }
   };
 
   useEffect(() => {
-    console.log("formstate is", taskId ? " edit" : " add");
-
     if (taskId) {
-      setCurrTask(getData());
-      if (currTask) {
-        console.log("sadadasd   as ---", currTask);
-      }
+      getData().then((data) => {
+        setCurrTask(data);
+        intValues = data;
+      });
     }
+    console.log(intValues);
+    console.log(currTask);
   }, []);
 
   return (
     <div className="form-container">
-      <Formik
-        initialValues={{
-          desc: currTask.desc,
-          status: currTask.status,
-          text: currTask.text,
-        }}
-        onSubmit={(values) => onSubmit(values)}
-      >
+      <Formik initialValues={intValues} onSubmit={(values) => onSubmit(values)}>
         <Form>
           {taskId ? <>Edit Task</> : <>Add New Task</>}
           <Field type="text" name="text" required />
           <Field type="text" name="desc" required />
-          <Field as="select" name="status">
+          <Field name="status" as="select">
             <option value="Ready">Ready</option>
             <option value="Done">Done</option>
             <option value="InProgress">In Progress</option>
