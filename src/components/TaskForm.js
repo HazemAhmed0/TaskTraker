@@ -14,14 +14,13 @@ import { useAuth } from "./Auth";
 const TaskForm = () => {
   const { currUser } = useAuth();
   const navigate = useNavigate();
-  const [currTask, setCurrTask] = useState("");
+  const [currTask, setCurrTask] = useState({});
   const params = useParams();
   const taskId = params.taskId;
-  const [formState, setFormState] = useState("");
 
   const onSubmit = async (values) => {
     console.log(values.text);
-    if (formState == "edit") {
+    if (taskId) {
       console.log("i edited");
       onEdit({ text: values.text, desc: values.desc, status: values.status });
     } else {
@@ -63,10 +62,13 @@ const TaskForm = () => {
   };
 
   useEffect(() => {
-    console.log("formstate", formState);
+    console.log("formstate is", taskId ? " edit" : " add");
 
     if (taskId) {
       setCurrTask(getData());
+      if (currTask) {
+        console.log("sadadasd   as ---", currTask);
+      }
     }
   }, []);
 
@@ -81,7 +83,7 @@ const TaskForm = () => {
         onSubmit={(values) => onSubmit(values)}
       >
         <Form>
-          {formState == "edit" ? <>Edit Task</> : <>Add New Task</>}
+          {taskId ? <>Edit Task</> : <>Add New Task</>}
           <Field type="text" name="text" required />
           <Field type="text" name="desc" required />
           <Field as="select" name="status">
@@ -91,7 +93,7 @@ const TaskForm = () => {
           </Field>
 
           <button className="w-100" type="submit">
-            {formState === "edit" ? "Update Task" : "Add Task"}
+            {taskId ? "Update Task" : "Add Task"}
           </button>
         </Form>
       </Formik>

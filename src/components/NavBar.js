@@ -25,16 +25,14 @@ const NavBar = () => {
           <div className="dropdown">
             <button className="dropbtn">
               {" "}
-              {currUser.email}
+              {currUser.displayName}
               <div className="nav-avatar">
-              {currUser.photoURL ? (
-                
-                <img src={currUser.photoURL} alt="Profile avatar" />
-              ) : (
-                ""
-              )}
+                {currUser.photoURL ? (
+                  <img src={currUser.photoURL} alt="Profile avatar" />
+                ) : (
+                  ""
+                )}
               </div>
-              
             </button>
             <div className="dropdown-content">
               <Link to="/profile">Profile</Link>
