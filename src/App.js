@@ -21,7 +21,7 @@ function App() {
       });
       setTaskList(currSnap);
     });
-  });
+  },[]);
 
   const [taskList, setTaskList] = useState([]);
 

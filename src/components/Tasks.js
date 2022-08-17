@@ -59,9 +59,9 @@ const Tasks = ({ tasks }) => {
       {tasks
         .filter((task) => task.user == currUser.email)
         .map((task) => (
-          <div className="DraggableElement" id={task.id} draggable={true}>
+          <div className="DraggableElement" id={task.id} draggable={true} key={task.id}>
             <Task
-              key={task.id}
+              
               task={task}
               onDelete={onDelete}
               onDone={onComplete}

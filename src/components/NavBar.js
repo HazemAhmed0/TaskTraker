@@ -15,7 +15,6 @@ const NavBar = () => {
       setError("Unable to logout");
     }
   }
-
   return (
     <nav className="nav">
       <Link to="/" className="site-title">
@@ -27,11 +26,15 @@ const NavBar = () => {
             <button className="dropbtn">
               {" "}
               {currUser.email}
+              <div className="nav-avatar">
               {currUser.photoURL ? (
+                
                 <img src={currUser.photoURL} alt="Profile avatar" />
               ) : (
                 ""
               )}
+              </div>
+              
             </button>
             <div className="dropdown-content">
               <Link to="/profile">Profile</Link>
