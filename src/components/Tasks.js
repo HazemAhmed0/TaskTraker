@@ -1,14 +1,6 @@
 import Task from "./Task";
 import { Link } from "react-router-dom";
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { getFirestore, updateDoc, doc, deleteDoc } from "firebase/firestore";
 
 import { useAuth } from "./Auth";
 
@@ -59,9 +51,13 @@ const Tasks = ({ tasks }) => {
       {tasks
         .filter((task) => task.user == currUser.email)
         .map((task) => (
-          <div className="DraggableElement" id={task.id} draggable={true} key={task.id}>
+          <div
+            className="DraggableElement"
+            id={task.id}
+            draggable={true}
+            key={task.id}
+          >
             <Task
-              
               task={task}
               onDelete={onDelete}
               onDone={onComplete}

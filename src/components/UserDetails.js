@@ -1,31 +1,13 @@
-import { Button, Card, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import React, { useEffect, useRef } from "react";
 import { useAuth } from "./Auth";
 import { updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Field, Form, useFormik } from 'formik';
-
-import avatar from "../res/testProfile.jpg";
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  getDoc,
-  updateDoc,
-  doc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { Formik, Field, Form } from "formik";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const UserDetails = () => {
-  const emailRef = useRef();
-  const passRef = useRef();
-  const passConfRef = useRef();
-  const NameRef = useRef();
-  const TelRef = useRef();
-  const profilePicRef = useRef();
   const { currUser, updatePassword, updateEmail, refineErr } = useAuth();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
@@ -34,7 +16,7 @@ const UserDetails = () => {
   const [photoURL, setPhotoURL] = useState();
 
   const profileChange = (e) => {
-    console.log(e)
+    console.log(e);
     if (e.target.files[0]) {
       setPhoto(e.target.files[0]);
     }
@@ -55,18 +37,6 @@ const UserDetails = () => {
     setLoading(false);
     alert("Upload done!");
   };
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     email: currUser.email,
-  //     name: currUser.displayName,
-  //     // tel: currUser.phoneNumber,
-  //     password: "",
-  //     passwordConfirm: "",
-  //     profile: "",
-  //   },
-    
-  // });
 
   const onSubmit = (values) => {
     console.log(values);
@@ -97,7 +67,7 @@ const UserDetails = () => {
       );
     }
     if (photo) {
-      console.log("got here")
+      console.log("got here");
       promises.push(upload(photo, currUser, setLoading));
     }
 
@@ -111,10 +81,10 @@ const UserDetails = () => {
       .finally(() => {
         setLoading(false);
       });
-  }
+  };
 
   return (
-    <>
+    <div className="form-container">
       <Formik
         initialValues={{
           email: currUser.email,
@@ -124,84 +94,47 @@ const UserDetails = () => {
           passwordConfirm: "",
           profile: "",
         }}
-        onSubmit={(values) => onSubmit(values)}>
-
-        <Form >
+        onSubmit={(values) => onSubmit(values)}
+      >
+        <Form>
           <h2 className="text-center mb-4">Profile Details</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <div className="pf-container">
             <img src={photoURL}></img>
           </div>
 
-          <Field id="email" name="email" placeholder="put your email" type="email"/>
+          <Field
+            id="email"
+            name="email"
+            placeholder="put your email"
+            type="email"
+          />
           <Field id="name" name="name" placeholder="put your name" />
-          <Field id="tel" name="tel" placeholder="put your phone number" type="tel"/>
-          <Field id="password" name="password" placeholder="Leave blank to keep the same" type="password" />
-          <Field id="passwordConfirm" name="passwordConfirm" placeholder="Leave blank to keep the same" type="password"/>
-          {/* <Field id="profile" name="profile" type="file" accept="image/png" onChange={(e)=>profileChange(e)}/> */}
-          <input name="profile" id="profile" type="file" onChange={(e) => profileChange(e)} />
-
-
-{/*       <div className="input-container">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email Address"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              required
-            />
-          </div>
-          <div className="input-container">
-            <input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              required
-            />
-          </div>
-          <div className="input-container">
-            <input
-              id="tel"
-              name="tel"
-              type="tel"
-              onChange={formik.handleChange}
-              value={formik.values.tel}
-            />
-          </div> 
-          <div className="input-container">
-            <input
-              id="password"
-              name="password"
-              type="password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              placeholder="Leave blank to keep the same"
-            />
-          </div>
-          <div className="input-container">
-            <input
-              id="passwordConfirm"
-              name="passwordConfirm"
-              type="password"
-              onChange={(e) => profileChange(e)}
-              value={formik.values.passwordConfirm}
-              placeholder="Leave blank to keep the same"
-            />
-          </div>
-
+          <Field
+            id="tel"
+            name="tel"
+            placeholder="put your phone number"
+            type="tel"
+          />
+          <Field
+            id="password"
+            name="password"
+            placeholder="Leave blank to keep the same"
+            type="password"
+          />
+          <Field
+            id="passwordConfirm"
+            name="passwordConfirm"
+            placeholder="Leave blank to keep the same"
+            type="password"
+          />
           <input
-            id="profile"
             name="profile"
+            id="profile"
             type="file"
-            accept="image/png"
-            onChange={formik.handleChange}
-            value={formik.values.profile}
-          ></input>
-          */}
+            onChange={(e) => profileChange(e)}
+          />
+
           <button disabled={loading} className="w-100" type="submit">
             Update
           </button>
@@ -210,7 +143,7 @@ const UserDetails = () => {
       <div className="w-100 text-center mt-2">
         <Link to="/">Cancel</Link>
       </div>
-    </>
+    </div>
   );
 };
 

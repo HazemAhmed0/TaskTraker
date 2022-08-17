@@ -1,6 +1,5 @@
-import "../styles/main.css";
 import { useSwipeable } from "react-swipeable";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Task = ({ task, onDelete, onDone, onProgress }) => {
   var classes = task.status + " task";

@@ -1,24 +1,20 @@
-import { Form, Button, Card, Alert } from "react-bootstrap";
-import React, { useRef } from "react";
+import { Alert } from "react-bootstrap";
 import { useAuth } from "./Auth";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Formik, Field, Form } from "formik";
 
 const Login = () => {
-  const emailRef = useRef();
-  const passRef = useRef();
   const { login, currUser, refineErr } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
+  const onSubmit = async (values) => {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passRef.current.value);
+      await login(values.email, values.password);
       navigate("/");
       console.log("Ok Im in as ", currUser.email);
     } catch (err) {
@@ -26,37 +22,42 @@ const Login = () => {
       console.log("error");
     }
     setLoading(false);
-  }
+  };
 
   return (
     <>
-      <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Log In</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={(event) => handleSubmit(event)}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                ref={passRef}
-                minLength="6"
-                required
-              />
-            </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+      <div className="form-container">
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          onSubmit={(values) => onSubmit(values)}
+        >
+          <Form>
+            <h2 className="text-center mb-4">Log In</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+
+            <Field
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              required
+            />
+            <Field
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Create a Password"
+              required
+            />
+            <button disabled={loading} className="w-100" type="submit">
               Log In
-            </Button>
+            </button>
           </Form>
-          <div className="w-100 text-center mt-2">
-            <Link to="/forgot-password">Forgot Password ?</Link>
-          </div>
-        </Card.Body>
-      </Card>
+        </Formik>
+      </div>
     </>
   );
 };
