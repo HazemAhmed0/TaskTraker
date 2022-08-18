@@ -5,7 +5,14 @@ import { useAuth } from "./Auth";
 export default function ProtectedRoute({ children }) {
   const { currUser } = useAuth();
 
-  if (!currUser) {
+  const hasJWT = () => {
+    let flag = false;
+    //check user has JWT token
+    localStorage.getItem("token") ? (flag = true) : (flag = false);
+    return flag;
+  };
+
+  if (!hasJWT()) {
     return <Navigate to="/login" />;
   }
 

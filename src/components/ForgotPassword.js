@@ -1,54 +1,76 @@
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import { Button, Card, Alert } from "react-bootstrap";
 import React, { useRef } from "react";
 import { useAuth } from "./Auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Formik, Field, Form } from "formik";
+import axios from "axios";
+const baseURL =
+  "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDwv8LR0H-le2AAQYNqzWBjBWYgw_WwmIs";
 
 const ForgotPassword = () => {
-  const emailRef = useRef();
   const { resetPassword, refineErr } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const customResetPassword = async (email) => {
+    await axios
+      .post(baseURL, {
+        requestType: "PASSWORD_RESET",
+        email: email,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
 
+  const onSubmit = async (values) => {
     try {
       setError("");
       setMessage("");
       setLoading(true);
-      await resetPassword(emailRef.current.value);
+      await customResetPassword(values.email);
       setMessage("Check your inbox for further instructions");
     } catch (err) {
       setError(refineErr(err.message));
       console.log("error");
     }
     setLoading(false);
-  }
+  };
   return (
     <>
-      <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Forgot Password</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {message && <Alert variant="success">{message}</Alert>}
-          <Form onSubmit={(event) => handleSubmit(event)}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+      <div className="form-container">
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          onSubmit={(values) => onSubmit(values)}
+        >
+          <Form>
+            <h2 className="text-center mb-4">Forgot Password</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {message && <Alert variant="success">{message}</Alert>}
+
+            <Field
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              required
+            />
+            <button disabled={loading} className="w-100" type="submit">
               Reset Password
-            </Button>
+            </button>
           </Form>
-          <div className="w-100 text-center mt-2">
-            <Link to="/login">Log In</Link>
-          </div>
-        </Card.Body>
-      </Card>
-      <div className="w-100 text-center mt-2">
-        Dont have an account? <Link to="/signup">Sign Up</Link>
+        </Formik>
+        <div className="w-100 text-center mt-2">
+          <Link to="/login">Log In</Link>
+        </div>
+        <div className="w-100 text-center mt-2">
+          Dont have an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </div>
     </>
   );

@@ -1,11 +1,31 @@
 import Task from "./Task";
 import { Link } from "react-router-dom";
-import { getFirestore, updateDoc, doc, deleteDoc } from "firebase/firestore";
-
+import {
+  updateDoc,
+  doc,
+  deleteDoc,
+  collection,
+  getFirestore,
+  onSnapshot,
+} from "firebase/firestore";
 import { useAuth } from "./Auth";
+import { useEffect, useState } from "react";
+import axios from "axios";
+const baseURL =
+  "https://task-tracker-865c6.firebaseio.com/users/jack/name.json'";
 
-const Tasks = ({ tasks }) => {
+const Tasks = () => {
   const { currUser } = useAuth();
+  const [taskList, setTaskList] = useState([]);
+  useEffect(() => {
+    onSnapshot(collection(getFirestore(), "tasks"), (snapshot) => {
+      let currSnap = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      });
+      setTaskList(currSnap);
+    });
+  }, []);
+
   const onDelete = async (id) => {
     await deleteDoc(doc(getFirestore(), "tasks", id));
   };
@@ -41,6 +61,17 @@ const Tasks = ({ tasks }) => {
     });
   }
 
+  // const customResetPassword = async (email) => {
+  //   await axios
+  //     .post(baseURL, {
+  //       requestType: "PASSWORD_RESET",
+  //       email: email,
+  //     })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     });
+  // };
+
   return (
     <div className="container">
       <button className="NewButton">
@@ -48,7 +79,7 @@ const Tasks = ({ tasks }) => {
       </button>
       <div id="delete-zone">Drag tasks here to delete</div>
 
-      {tasks
+      {taskList
         .filter((task) => task.user == currUser.email)
         .map((task) => (
           <div

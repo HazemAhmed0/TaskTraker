@@ -3,12 +3,27 @@ import { useAuth } from "./Auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Field, Form } from "formik";
+import axios from "axios";
+const baseSignUpURL =
+  "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDwv8LR0H-le2AAQYNqzWBjBWYgw_WwmIs";
 
 const SignUp = () => {
-  const { signUp, refineErr } = useAuth();
+  const { refineErr } = useAuth();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const customSignUp = async (email, password) => {
+    await axios
+      .post(baseSignUpURL, {
+        email: email,
+        password: password,
+        returnSecureToken: true,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   const onSubmit = async (values) => {
     if (values.password !== values.passwordConfirm) {
@@ -17,7 +32,8 @@ const SignUp = () => {
     try {
       setError("");
       setLoading(true);
-      await signUp(values.email, values.password);
+      //await signUp(values.email, values.password);
+      await customSignUp(values.email, values.password);
       navigate("/login");
     } catch (err) {
       setError(refineErr(err.message));
