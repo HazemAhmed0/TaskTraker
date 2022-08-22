@@ -8,14 +8,11 @@ import {
   getFirestore,
   onSnapshot,
 } from "firebase/firestore";
-import { useAuth } from "./Auth";
 import { useEffect, useState } from "react";
-import axios from "axios";
 const baseURL =
   "https://task-tracker-865c6.firebaseio.com/users/jack/name.json'";
 
-const Tasks = () => {
-  const { currUser } = useAuth();
+const Tasks = ({currUser}) => {
   const [taskList, setTaskList] = useState([]);
   useEffect(() => {
     onSnapshot(collection(getFirestore(), "tasks"), (snapshot) => {

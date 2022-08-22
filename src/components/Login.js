@@ -7,9 +7,8 @@ import axios from "axios";
 const baseSignUpURL =
   "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDwv8LR0H-le2AAQYNqzWBjBWYgw_WwmIs";
 
-const Login = () => {
-  const { login, refineErr } = useAuth();
-  const [currUser, setCurrUser] = useState("");
+const Login = ({currUser, setCurrUser}) => {
+  const { refineErr } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

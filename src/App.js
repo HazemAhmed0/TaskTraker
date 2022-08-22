@@ -21,41 +21,33 @@ function App() {
       setTaskList(currSnap);
     });
   }, []);
-
+  
+  const [currUser, setCurrUser] = useState("");
   const [taskList, setTaskList] = useState([]);
 
   return (
     <AuthProvider>
-      <NavBar />
+      <NavBar currUser={currUser}/>
       <Routes>
         <Route
           exact
           path="/"
           element={
-            <ProtectedRoute>
-              <Tasks tasks={taskList} />
+            <ProtectedRoute currUser={currUser}>
+              <Tasks tasks={taskList} currUser={currUser}/>
             </ProtectedRoute>
           }
         ></Route>
 
-        <Route
-          exact
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserDetails />
-            </ProtectedRoute>
-          }
-        ></Route>
 
-        <Route exact path="/login" element={<Login />}></Route>
+        <Route exact path="/login" element={<Login  currUser={currUser} setCurrUser={setCurrUser}/>}></Route>
 
         <Route
           exact
           path="/newtask"
           element={
-            <ProtectedRoute>
-              <TaskForm />
+            <ProtectedRoute currUser={currUser}>
+              <TaskForm currUser={currUser}/>
             </ProtectedRoute>
           }
         ></Route>
@@ -64,8 +56,8 @@ function App() {
           exact
           path="/edit-task/:taskId"
           element={
-            <ProtectedRoute>
-              <TaskForm />
+            <ProtectedRoute currUser={currUser}>
+              <TaskForm currUser={currUser}/>
             </ProtectedRoute>
           }
         ></Route>
@@ -74,18 +66,18 @@ function App() {
           exact
           path="/user"
           element={
-            <ProtectedRoute>
-              <UserDetails />
+            <ProtectedRoute currUser={currUser}>
+              <UserDetails currUser={currUser}/>
             </ProtectedRoute>
           }
         ></Route>
 
-        <Route exact path="/signup" element={<SignUp />}></Route>
+        <Route exact path="/signup" element={<SignUp currUser={currUser} setCurrUser={setCurrUser}/>}></Route>
 
         <Route
           exact
           path="/forgot-password"
-          element={<ForgotPassword />}
+          element={<ForgotPassword currUser={currUser}/>}
         ></Route>
       </Routes>
     </AuthProvider>

@@ -2,9 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "./Auth";
 
-const NavBar = () => {
+const NavBar = ({currUser}) => {
   const [error, setError] = useState("");
-  const { currUser, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   async function handleLogout() {
     setError("");
@@ -27,8 +27,8 @@ const NavBar = () => {
               {" "}
               {currUser.displayName}
               <div className="nav-avatar">
-                {currUser.photoURL ? (
-                  <img src={currUser.photoURL} alt="Profile avatar" />
+                {currUser.profilePicture ? (
+                  <img src={currUser.profilePicture} alt="Profile avatar" />
                 ) : (
                   ""
                 )}
